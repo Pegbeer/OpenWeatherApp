@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<PopUp:PopupPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:PopUp="clr-namespace:Rg.Plugins.Popup.Pages;assembly=Rg.Plugins.Popup"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App.View.WarningView">
+    <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Frame WidthRequest="350"
+               HasShadow="True"
+               HeightRequest="160"
+               Margin="40,10,40,0">
+            <StackLayout Spacing="20">
+                <Image Source="NoConn.png" 
+                       WidthRequest="50" 
+                       HeightRequest="60"/>
+                <Label Text="No connection available, please turn on your Internet."
+                       FontSize="Body"
+                       HorizontalTextAlignment="Center"
+                       TextColor="Red"/>
+            </StackLayout>
+        </Frame>
+    </StackLayout>
+</PopUp:PopupPage>

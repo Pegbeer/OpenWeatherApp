@@ -1,0 +1,245 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:App.ViewModel"
+             xmlns:sk="clr-namespace:Xamarin.Forms.Skeleton;assembly=Xamarin.Forms.Skeleton" xmlns:converters="clr-namespace:App.Converter"
+             x:Class="App.View.WeatherPage"
+             BackgroundColor="LightSteelBlue"
+             x:Name="page">
+    
+    
+    <ContentPage.BindingContext>
+        <vm:WeatherViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <converters:KelvinToCelciusConverter x:Key="KelvinToCelciusConverter"/>
+        <converters:LowerToUppercaseConverter x:Key="LowerToUppercaseConverter"/>
+    </ContentPage.Resources>
+    
+    <ContentPage.Content>
+        <StackLayout>
+            <Grid VerticalOptions="FillAndExpand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+
+                <Frame Grid.Row="0"
+                        HasShadow="True"
+                        CornerRadius="25"
+                       Padding="0"
+                        Margin="0,-25,0,0"
+                        IsClippedToBounds="True"
+                        BackgroundColor="Transparent"
+                       HorizontalOptions="FillAndExpand"
+                       sk:Skeleton.IsParent="True"
+                       sk:Skeleton.IsBusy="{Binding IsBusy}"
+                       sk:Skeleton.BackgroundColor="LightGray"
+                       sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+
+                    <AbsoluteLayout>
+                        <Image AbsoluteLayout.LayoutBounds="0.5,0.5,1,1"
+                               AbsoluteLayout.LayoutFlags="All"
+                               Source="img.jpg"
+                               Aspect="AspectFill"/>
+                        <Image AbsoluteLayout.LayoutBounds="0,0,1,1"
+                               AbsoluteLayout.LayoutFlags="All"
+                               Source="{Binding Source}"
+                               x:Name="img"
+                               Aspect="AspectFill"
+                               sk:Skeleton.IsBusy="{Binding IsBusy}"
+                               sk:Skeleton.Hide="True"/>
+
+                        <Grid AbsoluteLayout.LayoutFlags="All" 
+                              AbsoluteLayout.LayoutBounds="0,0,1,1">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="48"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="48"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="48"/>
+                            </Grid.ColumnDefinitions>
+
+
+                            <Frame BackgroundColor="Transparent"
+                                   Grid.Column="1"
+                                   Grid.Row="0"
+                                   Margin="0,60"
+                                   HasShadow="False"
+                                   HorizontalOptions="Center"
+                                   Padding="0"
+                                   VerticalOptions="Start"
+                                   Grid.RowSpan="2"
+                                   CornerRadius="5"
+                                   sk:Skeleton.IsBusy="{Binding IsBusy}"
+                                   sk:Skeleton.BackgroundColor="White"
+                                   sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                                <Label Text="{Binding Name}"
+                                   TextColor="White"
+                                   FontSize="Title"
+                                   FontAttributes="Bold"
+                                   HorizontalOptions="Center"/>
+                            </Frame>
+                            <StackLayout Grid.Column="1"
+                                         Grid.Row="1"
+                                         HorizontalOptions="CenterAndExpand"
+                                         VerticalOptions="Center"
+                                         Spacing="1">
+                                
+                                <Frame BackgroundColor="Transparent"
+                                       HasShadow="False"
+                                       CornerRadius="5"
+                                       Padding="0"
+                                       Visual="Material"
+                                       sk:Skeleton.IsBusy="{Binding IsBusy}"
+                                       sk:Skeleton.BackgroundColor="White"
+                                       sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                                    <Label IsVisible="{Binding IsEmpty}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span Text="{Binding Source={x:Reference page}, Path=BindingContext.MainData.Temperature,Converter={StaticResource KelvinToCelciusConverter}}"
+                                                          FontAttributes="Bold"
+                                                          FontSize="60"
+                                                          TextColor="White"/>
+                                                    <Span Text="°C"
+                                                          FontSize="60"
+                                                          FontAttributes="Bold"
+                                                          TextColor="White"/>
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </Frame>
+
+                                <Frame BackgroundColor="Transparent"
+                                       HasShadow="False"
+                                       CornerRadius="5"
+                                       Padding="0"
+                                       sk:Skeleton.IsBusy="{Binding IsBusy}"
+                                       sk:Skeleton.BackgroundColor="White"
+                                       sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                                    <Label Text="{Binding Source={x:Reference page},Path=BindingContext.Clima.Description,Converter={StaticResource LowerToUppercaseConverter}}"
+                                           FontSize="20"
+                                           FontAttributes="Bold"
+                                           TextColor="White"
+                                           IsVisible="{Binding IsEmpty}"/>
+                                </Frame>
+                            </StackLayout>
+
+                        </Grid>
+                        
+                    </AbsoluteLayout>
+                </Frame>
+
+                <StackLayout Grid.Row="1" Spacing="30" Margin="0,30" x:Name="stackL" HorizontalOptions="CenterAndExpand">
+                    <Frame BackgroundColor="Transparent"
+                           CornerRadius="5"
+                           HasShadow="False"
+                           Padding="0"
+                           sk:Skeleton.IsBusy="{Binding IsBusy}"
+                           sk:Skeleton.BackgroundColor="White"
+                           sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                        <Label HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="Principal  |  " 
+                                          TextColor="Black" 
+                                          FontSize="Body"
+                                          FontAttributes="Bold"/>
+                                        <Span Text="{Binding Clima.Principal}" 
+                                          TextColor="Black"
+                                          FontSize="Body"
+                                          TextTransform="Uppercase"/>
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                    <Frame HasShadow="False"
+                           BackgroundColor="Transparent"
+                           CornerRadius="5"
+                           Padding="0"
+                           sk:Skeleton.IsBusy="{Binding IsBusy}"
+                           sk:Skeleton.BackgroundColor="White"
+                           sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                        <Label HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="Description  |  " 
+                                          TextColor="Black"
+                                          FontAttributes="Bold"
+                                          FontSize="Body"/>
+                                        <Span Text="{Binding Source={x:Reference page},Path=BindingContext.Clima.Description,Converter={StaticResource LowerToUppercaseConverter}}" 
+                                          TextColor="Black"
+                                          FontSize="Body"/>
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                    <Frame BackgroundColor="Transparent"
+                           HasShadow="False"
+                           CornerRadius="5"
+                           Padding="0"
+                           sk:Skeleton.IsBusy="{Binding IsBusy}"
+                           sk:Skeleton.BackgroundColor="White"
+                           sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                        <Label HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="Temperature  |  " 
+                                          TextColor="Black"
+                                          FontAttributes="Bold"
+                                          FontSize="Body"/>
+                                        <Span Text="{Binding Source={x:Reference page}, Path=BindingContext.MainData.Temperature,Converter={StaticResource KelvinToCelciusConverter}}" 
+                                          TextColor="Black"/>
+                                        <Span Text="°C"
+                                          TextColor="Black"
+                                          FontSize="Body"/>
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                    <Frame BackgroundColor="Transparent"
+                           HasShadow="False"
+                           CornerRadius="5"
+                           Padding="0"
+                           sk:Skeleton.IsBusy="{Binding IsBusy}"
+                           sk:Skeleton.BackgroundColor="White"
+                           sk:Skeleton.Animation="{sk:DefaultAnimation Fade}">
+                        <Label HorizontalOptions="Center">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <FormattedString.Spans>
+                                        <Span Text="Humidity  |  " 
+                                          TextColor="Black"
+                                          FontAttributes="Bold"
+                                          FontSize="Body"/>
+                                        <Span Text="{Binding MainData.Humidity}" 
+                                          TextColor="Black"
+                                          FontSize="Body"/>
+                                        <Span Text="%"
+                                          TextColor="Black"
+                                          FontSize="Body"/>
+                                    </FormattedString.Spans>
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                    </Frame>
+                </StackLayout>
+            </Grid>
+            
+        </StackLayout>
+        
+    </ContentPage.Content>
+</ContentPage>
